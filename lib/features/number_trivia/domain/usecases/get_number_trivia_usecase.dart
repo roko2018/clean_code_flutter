@@ -19,5 +19,5 @@ class GetNumberTrivia implements UseCase<NumberTrivia, Params> {
 class Params extends Equatable {
   final int number;
 
-  Params(this.number) : super([number]);
+  Params({this.number}) : super([number]);
 }
