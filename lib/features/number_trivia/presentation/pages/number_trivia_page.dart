@@ -35,7 +35,7 @@ BlocProvider<NumbertriviaBloc> buildBody(BuildContext context) {
             SizedBox(
               height: 12.0,
             ),
-            BlocBuilder(
+            BlocBuilder<NumbertriviaBloc, NumbertriviaState>(
               builder: (context, state) {
                 if (state is Empty) {
                   return MessageDisplay(
@@ -52,6 +52,7 @@ BlocProvider<NumbertriviaBloc> buildBody(BuildContext context) {
                     message: state.message,
                   );
                 }
+                return Container();
               },
             ),
             SizedBox(

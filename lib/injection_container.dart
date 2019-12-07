@@ -1,6 +1,7 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter_clean_architecture_example/features/number_trivia/data/datasources/number_trivia_remote_datasource.dart';
 import 'package:flutter_clean_architecture_example/features/number_trivia/domain/repositories/number_trivia_repository.dart';
+import 'package:flutter_clean_architecture_example/features/number_trivia/presentation/bloc/numbertrivia_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -11,12 +12,18 @@ import 'features/number_trivia/data/repositories/number_trivia_repository_impl.d
 import 'features/number_trivia/domain/usecases/get_number_trivia_usecase.dart';
 import 'features/number_trivia/domain/usecases/get_random_number_trivia_usecase.dart';
 
-final sl = GetIt.instance();
+final sl = GetIt.instance;
 
 Future<void> init() async {
   //! Features - Number Trivia
   // Bloc
-  sl.registerFactory();
+  sl.registerFactory(
+    () => NumbertriviaBloc(
+      concrete: sl(),
+      random: sl(),
+      inputConverter: sl(),
+    ),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => GetNumberTrivia(sl()));
@@ -33,16 +40,14 @@ Future<void> init() async {
 
   // Datasources
   sl.registerLazySingleton<NumberTriviaRemoteDatasource>(
-    () => NumberTriviaRemoteDatasourceImpl(client: sl()) 
-  );
+      () => NumberTriviaRemoteDatasourceImpl(client: sl()));
   sl.registerLazySingleton<NumberTriviaLocalDatasource>(
-    () => NumberTriviaLocalDatasourceImpl(sharedPreferences: sl()) 
-  );
+      () => NumberTriviaLocalDatasourceImpl(sharedPreferences: sl()));
 
   //! Core
   sl.registerLazySingleton(() => InputConverter());
   sl.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(sl()), 
+    () => NetworkInfoImpl(sl()),
   );
 
   //! External

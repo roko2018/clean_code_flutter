@@ -15,47 +15,49 @@ class _TriviaControlsState extends State<TriviaControls> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter a number',
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Enter a number',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              inputStr = value;
+            },
+            onSubmitted: (_) {
+              dispatchConcrete();
+            },
           ),
-          keyboardType: TextInputType.number,
-          onChanged: (value) {
-            inputStr = value;
-          },
-          onSubmitted: (_) {
-            dispatchConcrete();
-          },
-        ),
-        SizedBox(
-          height: 12.0,
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: RaisedButton(
-                child: Text('Search'),
-                color: Theme.of(context).accentColor,
-                textTheme: ButtonTextTheme.primary,
-                onPressed: dispatchConcrete,
+          SizedBox(
+            height: 12.0,
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: RaisedButton(
+                  child: Text('Search'),
+                  color: Theme.of(context).accentColor,
+                  textTheme: ButtonTextTheme.primary,
+                  onPressed: dispatchConcrete,
+                ),
               ),
-            ),
-            SizedBox(
-              width: 12.0,
-            ),
-            Expanded(
-              child: RaisedButton(
-                child: Text('Get Random Trivia'),
-                onPressed: dispatchRandom,
+              SizedBox(
+                width: 12.0,
               ),
-            ),
-          ],
-        ),
-      ],
+              Expanded(
+                child: RaisedButton(
+                  child: Text('Get Random Trivia'),
+                  onPressed: dispatchRandom,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -67,7 +69,6 @@ class _TriviaControlsState extends State<TriviaControls> {
 
   void dispatchRandom() {
     controller.clear();
-    BlocProvider.of<NumbertriviaBloc>(context)
-        .add(GetTriviaForRandomNumber());
+    BlocProvider.of<NumbertriviaBloc>(context).add(GetTriviaForRandomNumber());
   }
 }
